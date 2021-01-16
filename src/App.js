@@ -4,6 +4,25 @@ import './App.css';
 
 function App() {
   const [currentTime, setCurrentTime] = useState(0);
+  const [blacklist, setBlacklist] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [seperate, setSeperate] = useState(false);
+
+  var payload = {
+    blacklistData: blacklist
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetch('/api/test', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+      headers: new Headers({
+        "Content-Type":"application/json"
+      })
+    }).then(data => data.json()).then(json => console.log(json));
+  }
 
   useEffect(() => {
     fetch('/api/time').then(res => res.json()).then(data => {
@@ -27,6 +46,21 @@ function App() {
           Learn React
         </a>
         <p>The current time is {currentTime}.</p>
+	<form onSubmit={handleSubmit}>
+	  <p>Enter your blacklist</p>
+	  <input
+	    type='text'
+	    id='input'
+	    name='blacklist'
+	    value={blacklist}
+	    onChange={event => setBlacklist(event.target.value)}
+	  />
+	  <input
+	    type='submit'
+	    value='submit'
+	  />
+	</form>
+	<p>input is {blacklist}</p>
       </header>
     </div>
   );
