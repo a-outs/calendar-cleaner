@@ -9,9 +9,12 @@ function App() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [seperate, setSeperate] = useState(false);
+  const [excludeEvents, setExcludeEvents] = useState(false);
 
   var payload = {
-    blacklistData: blacklist
+    blacklistData: blacklist,
+    seperateData: seperate,
+    excludeEventsData: excludeEvents
   };
 
   const handleSubmit = (event) => {
@@ -62,6 +65,16 @@ function App() {
 	    value={seperate}
 	    onChange={event => setSeperate(!seperate)}
 	  />Seperate the calendar by class
+	</label>
+	<br/>
+	<label>
+	  <input
+	    type='checkbox'
+	    id='excludeEvents'
+	    name='excludeEvents'
+	    value={excludeEvents}
+	    onChange={event => setExcludeEvents(!excludeEvents)}
+	  />Exclude all events
 	</label>
 	  <br/>
 	  <input
