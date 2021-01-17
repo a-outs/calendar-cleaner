@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
@@ -11,6 +10,7 @@ function App() {
   const [seperate, setSeperate] = useState(false);
   const [excludeEvents, setExcludeEvents] = useState(false);
   const [moreInfoText, setMoreInfoText] = useState('');
+  const [output, setOutput] = useState(<div></div>);
   var showMore = false;
 
   var payload = {
@@ -18,29 +18,24 @@ function App() {
     blacklistData: blacklist,
     seperateData: seperate,
     excludeEventsData: excludeEvents
-  };
-
-  var output = (
-    <div id="output"></div>
-  );
+  }
 
   const outputHTML = (json) => {
-    output = (
-      <div id="output">
-        <p>Here are your calendar links:</p>
-      </div>
-    );
+    var outputHTMLarray = [];
+    for(let i = 0; i < json.output.length; i++) {
+      outputHTMLarray[i] = <><a href={"\""+json.output[i]+"\""} key={i}>{json.output[i]}</a><br/></>;
+    }
+    console.log(json.output.length);
+    setOutput(<div id='output'><hr/><h2>Your new calendar links:</h2><p>{outputHTMLarray}</p></div>);
   }
 
   const moreInfo = () => {
-    //showMore = !showMore;
-    if(moreInfoText == "") setMoreInfoText("This is a webapp originally created for HackDavis 2021. Made by Tim Stewart, Aidan Lee, Peter Yu, and Jun Min Kim");
+    if(moreInfoText === "") setMoreInfoText("This is a webapp originally created for HackDavis 2021. Made by Tim Stewart, Aidan Lee, Peter Yu, and Jun Min Kim");
     else setMoreInfoText("");
-    console.log(showMore + " " + moreInfoText);
   }
 
   const validURL = (str) => {
-    if(str=="") return "";
+    if(str==="") return "";
     var pattern = new RegExp('(canvas.ucdavis.edu/feeds/calendars/user_).{3,}.ics');
     if(!!pattern.test(str)) return "";
     else return "Warning! This link is invalid. Make sure this is copied straight from canvas.";
@@ -65,11 +60,12 @@ function App() {
     <div className="App">
       <header className="App-header">
 	<h1>Canvas Calendar Cleaner</h1>
-        <p>Welcome to the canvas calendar cleaner. Input your calendar link given by canvas along with any additional parameters as desired. We'll give you a link that you can use for <b>10 minutes</b> before it expires.</p>
+        <p>Welcome to the Canvas Calendar Cleaner. Input your calendar link straight from Canvas along with any additional parameters as desired. We'll give you a link that you can use for <b>10 minutes</b> before it expires.</p>
 	<button onClick={moreInfo}>Click here to show/hide more information</button>
-	<p>{moreInfoText}</p>
+	<p id='moreInfo'>{moreInfoText}</p>
+	<hr/>
 	<form onSubmit={handleSubmit}>
-	  <p>Enter your calendar link:</p>
+	  <label> Enter your calendar link:
 	  <input
 	    type='text'
 	    id='input'
@@ -77,8 +73,9 @@ function App() {
 	    value={inputLink}
 	    onChange={event => setInputLink(event.target.value)}
 	  />
+	  </label>
 	  <p id='warning'>{validURL(inputLink)}</p>
-	  <p>Enter your blacklist:</p>
+	  <label>Enter your blacklist:
 	  <input
 	    type='text'
 	    id='input'
@@ -86,25 +83,26 @@ function App() {
 	    value={blacklist}
 	    onChange={event => setBlacklist(event.target.value)}
 	  />
+	  </label>
 	<br/>
-	<label>
+	<label>Seperate the calendar by class:
 	  <input
 	    type='checkbox'
 	    id='checkbox'
 	    name='seperate'
 	    value={seperate}
 	    onChange={event => setSeperate(!seperate)}
-	  />Seperate the calendar by class
+	  />
 	</label>
 	<br/>
-	<label>
+	<label>Exclude all events:
 	  <input
 	    type='checkbox'
 	    id='checkbox'
 	    name='excludeEvents'
 	    value={excludeEvents}
 	    onChange={event => setExcludeEvents(!excludeEvents)}
-	  />Exclude all events
+	  />
 	</label>
 	  <br/>
 	  <input
