@@ -7,6 +7,7 @@ body, button, input {
 body {
   margin: 0;
   background-color: #282c34;
+  color: white;
 }
 
 .App {
@@ -17,7 +18,6 @@ body {
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  color: white;
   padding: 10px;
 }
 
@@ -34,6 +34,8 @@ p, label, input {
   font-size: 3vmin;
 }
 
+h1 { font-size: 5vmin;}
+
 a {
   color: cornflowerBlue;
 }
@@ -42,12 +44,16 @@ input#input {
   width: 13em;
 }
 
-#moreInfo {
+.moreInfo p {
   font-size: 2vmin;
 }
 
 hr {
   margin: 5vmin 2vmin 5vmin 2vmin;
+}
+
+.DayPickerInput {
+  color: black;
 }
 
 #warning {

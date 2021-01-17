@@ -6,12 +6,12 @@ import './App.css';
 function App() {
   const [inputLink, setInputLink] = useState('');
   const [blacklist, setBlacklist] = useState('');
-  const [startDate, setStartDate] = useState(undefined);
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(new Date('0001-01-01T01:00:00.000Z'));
+  const [endDate, setEndDate] = useState(new Date('9999-01-01T01:00:00.000Z'));
   const [separate, setSeparate] = useState(false);
   const [excludeEvents, setExcludeEvents] = useState(false);
   const [excludeHelpText, setExcludeHelp] = useState('');
-  const [moreInfoText, setMoreInfoText] = useState('');
+  const [moreInfoText, setMoreInfoText] = useState({display: "none"});
   const [output, setOutput] = useState(<div></div>);
   const [disabled, setDisabled] = useState('disabled');
 
@@ -20,7 +20,9 @@ function App() {
       inputLinkData: inputLink,
       blacklistData: blacklist,
       separateData: separate,
-      excludeEventsData: excludeEvents
+      excludeEventsData: excludeEvents,
+      startDate: startDate.toISOString().substring(0,10),
+      endDate: endDate.toISOString().substring(0,10)
     }
   }
 
@@ -37,8 +39,8 @@ function App() {
   }
 
   const moreInfo = () => {
-    if(moreInfoText === "") setMoreInfoText("This is a webapp originally created for HackDavis 2021. Made by Tim Stewart, Aidan Lee, Peter Yu, and Jun Min Kim");
-    else setMoreInfoText("");
+    if(Object.keys(moreInfoText).length == 0) setMoreInfoText({display: "none"});
+    else setMoreInfoText({});
   }
 
   const excludeHelp = () => {
@@ -67,7 +69,11 @@ function App() {
   }
 
   const handleStartDate = (day) => {
-    setStartDate(day)
+    setStartDate(day);
+  }
+
+  const handleEndDate = (day) => {
+    setEndDate(day);
   }
 
   const disabledChecker = () => {
@@ -96,10 +102,18 @@ function App() {
 	<h1>Canvas Calendar Cleaner</h1>
         <p>Welcome to the Canvas Calendar Cleaner. Input your calendar link straight from Canvas along with any additional parameters as desired. We'll give you a link that you can use for <b>10 minutes</b> before it expires.</p>
 	<button onClick={moreInfo}>Click here to show/hide more information</button>
-	<p id='moreInfo'>{moreInfoText}</p>
+	<div class='moreInfo' style={moreInfoText}>
+	  <h2>Explanation of inputs</h2>
+	  <p><b>Canvas calendar link:</b> This is where you paste the link straight from the Canvas website</p>
+	  <p><b>Blacklist:</b> Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are enclosed in quotes and seperated by a comma. Not doing this may lead to unintended side effects.</p>
+	  <p><b>Calendar start date:</b> Any events that take place before this date will be removed.</p>
+	  <p><b>Calendar end date:</b> Any events that take place after this date will be removed.</p>
+	  <br/>
+          <p><i>This is a webapp originally created for HackDavis 2021. Made by Tim Stewart, Aidan Lee, Peter Yu, and Jun Min Kim</i></p>
+	</div>
 	<hr/>
 	<form onSubmit={handleSubmit}>
-	  <label> Enter your calendar link:
+	  <label> Canvas calendar link:
 	  <input
 	    type='text'
 	    id='input'
@@ -110,7 +124,7 @@ function App() {
 	  />
 	  </label>
 	  <p id='warning'>{validURL(inputLink)}</p>
-	  <label>Enter your blacklist:
+	  <label>Blacklist:
 	  <input
 	    type='text'
 	    id='input'
@@ -120,7 +134,10 @@ function App() {
 	    onChange={event => setBlacklist(event.target.value)}
 	  />
 	  </label>
-	  <DayPickerInput onDayChange={handleStartDate} />
+	<br/>
+	  <label>Calendar start date: <DayPickerInput onDayChange={handleStartDate} /> </label>
+	<br/>
+	  <label>Calendar end date: <DayPickerInput onDayChange={handleEndDate} /> </label>
 	<br/>
 	<label>Split calendar by class:
 	  <input
