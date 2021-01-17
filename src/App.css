@@ -17,3 +17,16 @@
 .App-link {
   color: #61dafb;
 }
+
+label {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#warning {
+  color: red;
+}
+
+#checkbox {
+  margin: calc(10px + 1vmin);
+}
