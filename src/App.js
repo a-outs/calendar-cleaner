@@ -2,30 +2,28 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-  const [currentTime, setCurrentTime] = useState(0);
   const [inputLink, setInputLink] = useState('');
   const [blacklist, setBlacklist] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [seperate, setSeperate] = useState(false);
+  const [separate, setSeparate] = useState(false);
   const [excludeEvents, setExcludeEvents] = useState(false);
   const [moreInfoText, setMoreInfoText] = useState('');
   const [output, setOutput] = useState(<div></div>);
-  var showMore = false;
+  const [disabled, setDisabled] = useState('disabled');
 
   var payload = {
     inputLinkData: inputLink,
     blacklistData: blacklist,
-    seperateData: seperate,
+    separateData: separate,
     excludeEventsData: excludeEvents
   }
 
   const outputHTML = (json) => {
     var outputHTMLarray = [];
     for(let i = 0; i < json.output.length; i++) {
-      outputHTMLarray[i] = <><a href={"\""+json.output[i]+"\""} key={i}>{json.output[i]}</a><br/></>;
+      outputHTMLarray[i] = <><a href={json.output[i]} key={i}>{json.output[i]}</a><br/></>;
     }
-    console.log(json.output.length);
     setOutput(<div id='output'><hr/><h2>Your new calendar links:</h2><p>{outputHTMLarray}</p></div>);
   }
 
@@ -35,10 +33,19 @@ function App() {
   }
 
   const validURL = (str) => {
-    if(str==="") return "";
-    var pattern = new RegExp('(canvas.ucdavis.edu/feeds/calendars/user_).{3,}.ics');
-    if(!!pattern.test(str)) return "";
+    if(str==="") {
+      return "";
+    }
+    var pattern = new RegExp('(https://canvas.ucdavis.edu/feeds/calendars/user_).{3,}.ics');
+    if(!!pattern.test(str)) {
+      return "";
+    }
     else return "Warning! This link is invalid. Make sure this is copied straight from canvas.";
+  }
+
+  const disabledChecker = () => {
+    if(validURL(inputLink) !== "") return "disabled";
+    else return "";
   }
 
   const handleSubmit = (event) => {
@@ -81,17 +88,18 @@ function App() {
 	    id='input'
 	    name='blacklist'
 	    value={blacklist}
+	    placeholder='"Lecture", "Discussion"'
 	    onChange={event => setBlacklist(event.target.value)}
 	  />
 	  </label>
 	<br/>
-	<label>Seperate the calendar by class:
+	<label>Separate the calendar by class:
 	  <input
 	    type='checkbox'
 	    id='checkbox'
-	    name='seperate'
-	    value={seperate}
-	    onChange={event => setSeperate(!seperate)}
+	    name='separate'
+	    value={separate}
+	    onChange={event => setSeparate(!separate)}
 	  />
 	</label>
 	<br/>
@@ -108,6 +116,7 @@ function App() {
 	  <input
 	    type='submit'
 	    value='Submit'
+	    disabled={disabledChecker()}
 	  />
 	</form>
 	{output}
