@@ -22,5 +22,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# api stuff
 venv
 __pycache__
+
+# eslintcache
+.eslintchace
