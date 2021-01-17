@@ -30,21 +30,28 @@ p {
   margin-block-end: 1vmin;
 }
 
-p, label, input {
+p, input {
   font-size: 3vmin;
 }
 
-h1 { font-size: 5vmin;}
+h1 { 
+  font-size: 5vmin;
+}
 
 a {
   color: cornflowerBlue;
 }
 
-input#input {
-  width: 13em;
+form {
+  /*width: 40%;
+  margin: 0 auto;*/
 }
 
-.moreInfo p {
+#input {
+  width: 20em;
+}
+
+.moreInfo p, #linkHelp p, #blacklistHelp p, #excludeHelp, #dateHelp p, label{
   font-size: 2vmin;
 }
 
@@ -63,4 +70,8 @@ hr {
 
 #checkbox, input{
   margin: 2vmin 1vmin 2vmin 1vmin;
+}
+
+#linkHelp img {
+  width: 50%;
 }

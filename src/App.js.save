@@ -1,41 +1,21 @@
-import React, { useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns'
+Aimport React, { useState } from 'react';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
 import linkhelp1 from './linkhelp1.jpg';
 import './App.css';
-
-const THEME = createMuiTheme({
-  palette: {
-    type: 'dark',
-  },
-});
 
 function App() {
   const [inputLink, setInputLink] = useState('');
   const [blacklist, setBlacklist] = useState('');
-  const [startDate, setStartDate] = useState(undefined);
-  const [endDate, setEndDate] = useState(undefined);
+  const [startDate, setStartDate] = useState(new Date('0001-01-01T01:00:00.000Z'));
+  const [endDate, setEndDate] = useState(new Date('9999-01-01T01:00:00.000Z'));
   const [separate, setSeparate] = useState(false);
   const [excludeEvents, setExcludeEvents] = useState(false);
   const [excludeHelpText, setExcludeHelp] = useState('');
   const [moreInfoText, setMoreInfoText] = useState({display: "none"});
   const [linkHelpText, setLinkHelpText] = useState({display: "none"});
-  const [blacklistHelpText, setBlacklistHelp] = useState({display: "none"});
-  const [dateHelpText, setDateHelp] = useState({display: "none"});
   const [output, setOutput] = useState(<div></div>);
-  const [loading, setLoading] = useState(<div></div>);
   const [disabled, setDisabled] = useState('disabled');
-
-  const convertToISO = (day) => {
-    try {
-      return day.toISOString();
-    } catch (e) {
-      return "";
-    }
-  }
 
   var payload = {
     postData: {
@@ -43,8 +23,8 @@ function App() {
       blacklistData: blacklist,
       separateData: separate,
       excludeEventsData: excludeEvents,
-      startDate: convertToISO(startDate).substring(0,10),
-      endDate: convertToISO(endDate).substring(0,10)
+      startDate: startDate.toISOString().substring(0,10),
+      endDate: endDate.toISOString().substring(0,10)
     }
   }
 
@@ -74,16 +54,6 @@ function App() {
     else setLinkHelpText({});
   }
 
-  const blacklistHelp = () => {
-    if(Object.keys(blacklistHelpText).length == 0) setBlacklistHelp({display: "none"});
-    else setBlacklistHelp({});
-  }
-
-  const dateHelp = () => {
-    if(Object.keys(dateHelpText).length == 0) setDateHelp({display: "none"});
-    else setDateHelp({});
-  }
-
   const validURL = (str) => {
     if(str==="") {
       return "";
@@ -93,11 +63,6 @@ function App() {
       return "";
     }
     else return "Warning! This link is invalid. Make sure this is copied straight from canvas.";
-  }
-
-  const error = () => {
-    if(validURL(inputLink) === "") return false;
-    else return true;
   }
 
   const validBlacklist = (str) => {
@@ -118,13 +83,12 @@ function App() {
   }
 
   const disabledChecker = () => {
-    if(validURL(inputLink) !== "" || inputLink === "") return "disabled";
+    if(validURL(inputLink) !== "") return "disabled";
     else return "";
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setLoading(<div id='loading'><p>loading....</p></div>);
     fetch('/api/PostCal', {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -134,7 +98,6 @@ function App() {
     }).then(data => data.json()
     ).then(json => {
       console.log(json);
-      setLoading(<div id='loading'></div>);
       outputHTML(json);
     });
   }
@@ -155,66 +118,40 @@ function App() {
           <p><i>This is a webapp originally created for HackDavis 2021. Made by Tim Stewart, Aidan Lee, Peter Yu, and Jun Min Kim</i></p>
 	</div>
 	<hr/>
-	<MuiThemeProvider theme={THEME}>
-	<MuiPickersUtilsProvider utils={DateFnsUtils}>
-	<form onSubmit={handleSubmit} autoComplete="off" >
-	  <TextField
-	    error={Boolean(error())}
+	<form onSubmit={handleSubmit}>
+	  <label> Canvas calendar link<sup><a onClick={linkHelp}>[?]</a></sup>:
+	  <input
 	    type='text'
-	    margin='normal'
 	    id='input'
-	    label='Canvas Calendar Link'
 	    name='inputLink'
 	    value={inputLink}
 	    placeholder="https://canvas.ucdavis.edu/feeds/calendars/user_JSDFLUgjvmsdalkjSDIg.ics"
 	    onChange={event => setInputLink(event.target.value)}
-	    helperText={validURL(inputLink)}
 	  />
-	  <sup> <a href="javascript:void(0);" onClick={linkHelp}>[?]</a></sup>
-	  <div id='linkHelp' style={linkHelpText}>
+	  </label>
+	  <div id='linkHelpText' style={linkHelpText}>
 	    <p>The link may be found here on the canvas website:</p>
-	    <img src={linkhelp1} />
+	    <img src={linkhelp1} width="20vmin" />
 	  </div>
-	<br/>
-	  <TextField
-	    label='Blacklist'
+	  <p id='warning'>{validURL(inputLink)}</p>
+	  <label>Blacklist:
+	  <input
 	    type='text'
-	    margin='normal'
 	    id='input'
 	    name='blacklist'
 	    value={blacklist}
 	    placeholder='"Lecture", "Discussion", "etc."'
 	    onChange={event => setBlacklist(event.target.value)}
 	  />
-	  <sup> <a href='javascript:void(0)' onClick={blacklistHelp}>[?]</a></sup>
-	  <div id='blacklistHelp' style={blacklistHelpText}>
-	    <p>Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are enclosed in quotes and seperated by a comma. Not doing this may lead to unintended side effects.</p>
-	  </div>
+	  </label>
 	<br/>
-	  {/*<label>Calendar start date: <DayPickerInput onDayChange={handleStartDate} /> </label>*/}
-	  <KeyboardDatePicker
-	    label="Calendar start date"
-	    margin='normal'
-	    variant="inline"
-	    format="yyyy-MM-dd"
-	    value={startDate}
-	    onChange={handleStartDate}
-	  />
-	  <KeyboardDatePicker
-	    label="Calendar end date"
-	    margin='normal'
-	    variant="inline"
-	    format="yyyy-MM-dd"
-	    value={endDate}
-	    onChange={handleEndDate}
-	  /><sup><a href='javascript:void(0);' onClick={dateHelp}>[?]</a></sup>
-	  <div id='dateHelp' style={dateHelpText}>
-	    <p>This is <b>optional</b>. Only fill these out if you want to cut off events from before or after a specific date</p>
-	  </div>
-	  {/*<label>Calendar end date: <DayPickerInput onDayChange={handleEndDate} /> </label>*/}
+	  <label>Calendar start date: <DayPickerInput onDayChange={handleStartDate} /> </label>
+	<br/>
+	  <label>Calendar end date: <DayPickerInput onDayChange={handleEndDate} /> </label>
 	<br/>
 	<label>Split calendar by class:
-	  <Checkbox
+	  <input
+	    type='checkbox'
 	    id='checkbox'
 	    name='separate'
 	    value={separate}
@@ -222,15 +159,16 @@ function App() {
 	  />
 	</label>
 	<br/>
-	<label>Exclude all events<sup><a href="javascript:void(0);" onClick={excludeHelp}>[?]</a></sup>:
-	  <Checkbox
+	<label>Exclude all events<sup><a onClick={excludeHelp}>[?]</a></sup>:
+	  <input
+	    type='checkbox'
 	    id='checkbox'
 	    name='excludeEvents'
 	    value={excludeEvents}
 	    onChange={event => setExcludeEvents(!excludeEvents)}
 	  />
 	</label>
-	<p id='excludeHelp'>{excludeHelpText}</p>
+	<p>{excludeHelpText}</p>
 	  <br/>
 	  <input
 	    type='submit'
@@ -238,9 +176,6 @@ function App() {
 	    disabled={disabledChecker()}
 	  />
 	</form>
-	</MuiPickersUtilsProvider>
-	</MuiThemeProvider>
-	{loading}
 	{output}
       </header>
     </div>
