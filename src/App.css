@@ -1,4 +1,4 @@
-@import "http://fonts.googleapis.com/css?family=Raleway";
+@import "https://fonts.googleapis.com/css?family=Raleway";
 
 body, button, input {
   font-family: Raleway;
@@ -36,6 +36,10 @@ p, label, input {
 
 a {
   color: cornflowerBlue;
+}
+
+input#input {
+  width: 13em;
 }
 
 #moreInfo {
