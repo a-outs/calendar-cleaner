@@ -27,7 +27,6 @@ function App() {
   const [dateHelpText, setDateHelp] = useState({display: "none"});
   const [output, setOutput] = useState(<div></div>);
   const [loading, setLoading] = useState(<div></div>);
-  const [disabled, setDisabled] = useState('disabled');
 
   const convertToISO = (day) => {
     try {
@@ -61,27 +60,27 @@ function App() {
   }
 
   const moreInfo = () => {
-    if(Object.keys(moreInfoText).length == 0) setMoreInfoText({display: "none"});
+    if(Object.keys(moreInfoText).length === 0) setMoreInfoText({display: "none"});
     else setMoreInfoText({});
   }
 
   const excludeHelp = () => {
-    if(excludeHelpText === "") setExcludeHelp("This will remove all of the 'events' from the calendar, meaning only things such as quizzes or assignments will be left on the calendar. (Click the question mark again to close this message)");
+    if(excludeHelpText === "") setExcludeHelp("This will remove all of the 'events' from the calendar, meaning only things such as quizzes or assignments will be left on the calendar.");
     else setExcludeHelp("");
   }
 
   const linkHelp = () => {
-    if(Object.keys(linkHelpText).length == 0) setLinkHelpText({display: "none"});
+    if(Object.keys(linkHelpText).length === 0) setLinkHelpText({display: "none"});
     else setLinkHelpText({});
   }
 
   const blacklistHelp = () => {
-    if(Object.keys(blacklistHelpText).length == 0) setBlacklistHelp({display: "none"});
+    if(Object.keys(blacklistHelpText).length === 0) setBlacklistHelp({display: "none"});
     else setBlacklistHelp({});
   }
 
   const dateHelp = () => {
-    if(Object.keys(dateHelpText).length == 0) setDateHelp({display: "none"});
+    if(Object.keys(dateHelpText).length === 0) setDateHelp({display: "none"});
     else setDateHelp({});
   }
 
@@ -149,6 +148,7 @@ function App() {
 	<h1>Canvas Calendar Cleaner</h1>
         <p>Welcome to the Canvas Calendar Cleaner. Input your calendar link straight from Canvas along with any additional parameters as desired. We'll give you a link that you can use for <b>10 minutes</b> before it expires.</p>
         <p>Click on the question mark next to each element to learn more about them!</p>
+	<p>You can copy <a href="https://canvas.ucdavis.edu/feeds/calendars/user_ODFFhjDBOCcHqFYiZlS2riPi4WaYGAwHTQUbhraK.ics">this link</a> to try out this webapp if you don't have a UC Davis Canvas account.</p>
 	<button onClick={moreInfo}>Click here to show/hide more information</button>
 	<div class='moreInfo' style={moreInfoText}>
 	  <h2>Explanation of inputs</h2>
@@ -156,6 +156,8 @@ function App() {
 	  <p><b>Blacklist:</b> Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are separated by a comma. Not doing this may lead to unintended side effects.</p>
 	  <p><b>Calendar start date:</b> Any events that take place before this date will be removed.</p>
 	  <p><b>Calendar end date:</b> Any events that take place after this date will be removed.</p>
+	  <p><b>Split calendar by class:</b> Checking this will result in a seperate calendar being generated for each class on Canvas.</p>
+	  <p><b>Exclude all events:</b> Checking this will result in all Canvas "events" being removed.</p>
 	  <br/>
           <p><i>This is a webapp originally created for HackDavis 2021. Made by Tim Stewart, Aidan Lee, Peter Yu, and Jun Min Kim</i></p>
 	</div>
