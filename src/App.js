@@ -152,7 +152,7 @@ function App() {
 	<div class='moreInfo' style={moreInfoText}>
 	  <h2>Explanation of inputs</h2>
 	  <p><b>Canvas calendar link:</b> This is where you paste the link straight from the Canvas website</p>
-	  <p><b>Blacklist:</b> Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are enclosed in quotes and seperated by a comma. Not doing this may lead to unintended side effects.</p>
+	  <p><b>Blacklist:</b> Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are enclosed in quotes and separated by a comma. Not doing this may lead to unintended side effects.</p>
 	  <p><b>Calendar start date:</b> Any events that take place before this date will be removed.</p>
 	  <p><b>Calendar end date:</b> Any events that take place after this date will be removed.</p>
 	  <br/>
