@@ -56,6 +56,7 @@ function App() {
       }
       setOutput(<div id='output'><hr/><h2>Your new calendar links:</h2>{outputHTMLarray}</div>);
     } catch (e) {
+      setOutput(<div id='output'><p>Whoops! Looks like something went wrong. Refresh the page and try again.</p></div>);
     }
   }
 
@@ -136,6 +137,9 @@ function App() {
       console.log(json);
       setLoading(<div id='loading'></div>);
       outputHTML(json);
+    }).catch(error=> {
+      outputHTML("djfds");
+      setLoading(<div id='loading'></div>);
     });
   }
 
@@ -159,6 +163,7 @@ function App() {
 	<MuiPickersUtilsProvider utils={DateFnsUtils}>
 	<form onSubmit={handleSubmit} autoComplete="off" >
 	  <TextField
+	    color="secondary"
 	    error={Boolean(error())}
 	    type='text'
 	    margin='normal'
@@ -177,6 +182,7 @@ function App() {
 	  </div>
 	<br/>
 	  <TextField
+	    color="secondary"
 	    label='Blacklist'
 	    type='text'
 	    margin='normal'
@@ -193,6 +199,7 @@ function App() {
 	<br/>
 	  {/*<label>Calendar start date: <DayPickerInput onDayChange={handleStartDate} /> </label>*/}
 	  <KeyboardDatePicker
+	    color="secondary"
 	    label="Calendar start date"
 	    margin='normal'
 	    variant="inline"
@@ -201,6 +208,7 @@ function App() {
 	    onChange={handleStartDate}
 	  />
 	  <KeyboardDatePicker
+	    color="secondary"
 	    label="Calendar end date"
 	    margin='normal'
 	    variant="inline"

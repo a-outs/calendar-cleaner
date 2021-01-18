@@ -55,6 +55,15 @@ form {
   font-size: 2vmin;
 }
 
+#linkHelp, #blacklistHelp, #excludeHelp, #dateHelp {
+  /*position: fixed;
+  background-color: #51504f;
+  width: 60%;
+  margin: 0 20vmin;
+  padding: 0vmin;
+  z-index: 69;*/
+}
+
 hr {
   margin: 5vmin 2vmin 5vmin 2vmin;
 }
