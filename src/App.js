@@ -148,11 +148,12 @@ function App() {
       <header className="App-header">
 	<h1>Canvas Calendar Cleaner</h1>
         <p>Welcome to the Canvas Calendar Cleaner. Input your calendar link straight from Canvas along with any additional parameters as desired. We'll give you a link that you can use for <b>10 minutes</b> before it expires.</p>
+        <p>Click on the question mark next to each element to learn more about them!</p>
 	<button onClick={moreInfo}>Click here to show/hide more information</button>
 	<div class='moreInfo' style={moreInfoText}>
 	  <h2>Explanation of inputs</h2>
 	  <p><b>Canvas calendar link:</b> This is where you paste the link straight from the Canvas website</p>
-	  <p><b>Blacklist:</b> Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are enclosed in quotes and separated by a comma. Not doing this may lead to unintended side effects.</p>
+	  <p><b>Blacklist:</b> Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are separated by a comma. Not doing this may lead to unintended side effects.</p>
 	  <p><b>Calendar start date:</b> Any events that take place before this date will be removed.</p>
 	  <p><b>Calendar end date:</b> Any events that take place after this date will be removed.</p>
 	  <br/>
@@ -189,12 +190,12 @@ function App() {
 	    id='input'
 	    name='blacklist'
 	    value={blacklist}
-	    placeholder='"Lecture", "Discussion", "etc."'
+	    placeholder='Lecture, Discussion, etc.'
 	    onChange={event => setBlacklist(event.target.value)}
 	  />
 	  <sup> <a href='javascript:void(0)' onClick={blacklistHelp}>[?]</a></sup>
 	  <div id='blacklistHelp' style={blacklistHelpText}>
-	    <p>Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are enclosed in quotes and seperated by a comma. Not doing this may lead to unintended side effects.</p>
+	    <p>Any event from the original calendar whose title matches any keywords in the blacklist will be removed. Make sure keywords are seperated by a comma. Not doing this may lead to unintended side effects.</p>
 	  </div>
 	<br/>
 	  {/*<label>Calendar start date: <DayPickerInput onDayChange={handleStartDate} /> </label>*/}
